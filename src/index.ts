@@ -12,10 +12,12 @@ app.get("/api/posts", async(req, res) => {
 
 app.post("/api/posts/", async(req, res) => {
   const body=req.body;
+  console.log(body);
+  
   if(!body?.description || !body?.user_id || !body?.image) 
       return res.status(400);
-  const newPost=await pool.query(`INSERT INTO posts(id,description,image,user_id,\
-  created_at,updated_at) VALUES(gen_random_uuid(),$1,$2,$3,now(),now())`,[body.description,body.image,body.user_id]);
+  const newPost=await pool.query(`INSERT INTO post (id,description,users_id,created0n,image,updatedon) VALUES ($4, $1, $2, '2016-2-2 00:00',$3, '2016-2-2 00:00')
+ `,[body.description,body.user_id,body.image, body.id]);
   if(newPost.rowCount>0)
       return res.status(201);
 });
