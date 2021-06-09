@@ -14,12 +14,11 @@ app.post("/api/posts/", async(req, res) => {
   const body=req.body;
   console.log(body);
   
-  if(!body?.description || !body?.user_id || !body?.image) 
-      return res.status(400);
+  if(!body?.id || !body?.description || !body?.users_id || !body?.image) 
+      return res.status(400).send();
   const newPost=await pool.query(`INSERT INTO post (id,description,users_id,created0n,image,updatedon) VALUES ($4, $1, $2, '2016-2-2 00:00',$3, '2016-2-2 00:00')
  `,[body.description,body.user_id,body.image, body.id]);
-  if(newPost.rowCount>0)
-      return res.status(201);
+      return res.status(201).send(newPost);
 });
 
 
