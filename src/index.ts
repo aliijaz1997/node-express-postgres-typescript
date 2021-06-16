@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import cookieSession from "cookie-session";
 import { requireAuth } from "./requireauth";
+import cors from "cors";
 
 const app = express();
 const port = 5000;
@@ -14,6 +15,14 @@ dotenv.config();
 app.use(
   cookieSession({
     signed: false,
+  })
+);
+
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
+    credentials: true,
   })
 );
 
@@ -75,7 +84,8 @@ app.post("/api/auth/signin", async (req, res) => {
   const body = req.body;
   console.log(body);
   try {
-    if (!body?.password || !body?.email) return res.status(400).send();
+    if (!body?.password || !body?.email)
+      return res.status(400).send("Field is missing");
     const alreadyUser = await pool.query(
       "select * from users where email = $1",
       [body.email]
@@ -102,7 +112,7 @@ if (!process.env.JWT_TOKEN) {
 }
 app.post("/api/auth/signout", (req, res) => {
   req.session = null;
-  res.status(200).send();
+  res.status(200).send("Logged Out");
 });
 app.listen(port, () => {
   console.log("listnning on port 5000...");
