@@ -114,6 +114,10 @@ app.post("/api/auth/signout", (req, res) => {
   req.session = null;
   res.status(200).send("Logged Out");
 });
+
+app.get("/api/auth/current", requireAuth, (req, res) => {
+  res.json(req.user);
+});
 app.listen(port, () => {
   console.log("listnning on port 5000...");
 });
