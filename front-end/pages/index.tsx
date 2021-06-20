@@ -27,12 +27,9 @@ export default function Home() {
         { withCredentials: true }
       );
       reset({ Description: "" });
-      useEffect(() => {
-        const data = axios.get<Post[]>("http://localhost:5000/api/posts");
-        const result = data.then((res) => {
-          setPostdata(res.data);
-        });
-      }, []);
+      await axios.get<Post[]>("http://localhost:5000/api/posts").then((res) => {
+        setPostdata(res.data);
+      });
     } catch (error) {
       console.log(error.response);
     }
@@ -41,13 +38,9 @@ export default function Home() {
     const { data } = await axios.delete(
       `http://localhost:5000/api/posts/${id}`
     );
-
-    useEffect(() => {
-      const data = axios.get<Post[]>("http://localhost:5000/api/posts");
-      const result = data.then((res) => {
-        setPostdata(res.data);
-      });
-    }, []);
+    await axios.get<Post[]>("http://localhost:5000/api/posts").then((res) => {
+      setPostdata(res.data);
+    });
   };
   return (
     <>
