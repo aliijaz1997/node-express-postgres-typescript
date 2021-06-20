@@ -15,7 +15,8 @@ Content-Type: application/json
 
 {
     "id" : 34234,
-    "description" : "Hi from Salman"
+    "description" : "The virus that causes COVID-19 is mainly transmitted through droplets generated when an infected person coughs, sneezes, or exhales. These droplets are too heavy to hang in the air, and quickly fall on floors or surfaces.",
+    "user_id": 6
 }
 
 ### Sign In User
@@ -33,5 +34,10 @@ POST http://localhost:5000/api/auth/signout HTTP/1.1
 Content-Type: application/json
 
 
-### Fetch posts
-GET http://localhost:5000/api/
+###
+GET http://localhost:5000/api/auth/current HTTP/1.1
+Content-Type: application/json
+
+###
+DELETE  http://localhost:5000/api/posts/34234 HTTP/1.1
+Content-Type: application/json

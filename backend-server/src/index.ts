@@ -21,13 +21,17 @@ app.use(
 app.use(
   cors({
     origin: "http://localhost:3000",
-    methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
+    methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "DELETE"],
     credentials: true,
   })
 );
 
 app.get("/api/posts", async (req, res) => {
-  const posts = await pool.query("SELECT * FROM post");
+  const posts = await pool.query(
+    "SELECT post.id, post.updatedon, post.description, users.fullname, COUNT(post_reaction.reaction_id) as number_of_reactions FROM post LEFT JOIN post_reaction ON post.id = post_reaction.post_id JOIN users ON post.users_id = users.id GROUP BY post.id, post.description, post.updatedon, users.fullname"
+  );
+  console.log(posts.rows);
+
   res.json(posts.rows);
 });
 
@@ -36,17 +40,25 @@ app.post("/api/posts/", requireAuth, async (req, res) => {
   console.log(body);
   console.log(req.user);
 
-  //   if (!body?.id || !body?.description || !body?.users_id || !body?.image)
-  //     return res.status(400).send();
-  //   const newPost = await pool.query(
-  //     `INSERT INTO post (id,description,users_id,created0n,image,updatedon) VALUES ($4, $1, $2, '2016-2-2 00:00',$3, '2016-2-2 00:00')
-  //  `,
-  //     [body.description, body.user_id, body.image, body.id]
-  //   );
-  return res.status(201);
-  // .send(newPost);
-});
+  if (!body?.description) return res.status(400).send("Enter all the data");
+  const newPost = await pool.query(
+    `INSERT INTO post (description,users_id,updatedon) VALUES ($1, $2, '2016-2-2 00:00')  RETURNING *
+   `,
+    [body.description, req.user?.id]
+  );
 
+  return res.status(201).send(newPost);
+});
+app.delete("/api/posts/:id", async (req, res) => {
+  console.log(req.params.id);
+  const id = req.params.id;
+  const deletedPost = await pool.query("DELETE FROM post WHERE post.id=$1", [
+    id,
+  ]);
+  console.log("Successfully deleted");
+
+  res.json(deletedPost);
+});
 app.get("/api/posts/:id", async (req, res) => {
   const id = req.params.id;
   const post = await pool.query("SELECT * FROM post WHERE id=$1", [id]);
@@ -116,6 +128,8 @@ app.post("/api/auth/signout", (req, res) => {
 });
 
 app.get("/api/auth/current", requireAuth, (req, res) => {
+  console.log("got request");
+
   res.json(req.user);
 });
 app.listen(port, () => {

@@ -1,4 +1,5 @@
 import axios from "axios";
+import Router from "next/router";
 import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 
@@ -26,7 +27,7 @@ function SignIn() {
         { withCredentials: true }
       );
       reset({ Email: "", Password: "" });
-      // Router.push("/");
+      Router.push("/");
     } catch (error) {
       console.log(error.response);
     }

@@ -1,4 +1,35 @@
-function Posts() {
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Router from "next/router";
+export interface Post {
+  id: number;
+  updatedon: string;
+  description: string;
+  fullname: string;
+  number_of_reactions: number;
+}
+interface PostsProps {
+  handleDelete(id: number): void;
+  Data: Post[];
+}
+function Posts({ handleDelete, Data }: PostsProps) {
+  return (
+    <div>
+      {Data?.map((data: Post, index: number) => {
+        return (
+          <PostStructure handleDelete={handleDelete} data={data} key={index} />
+        );
+      })}
+    </div>
+  );
+}
+
+export default Posts;
+interface PostStructureProps {
+  data: Post;
+  handleDelete(id: number): void;
+}
+function PostStructure({ data, handleDelete }: PostStructureProps) {
   return (
     <div className="flex justify-center">
       <div className="max-w-md py-4 px-8 bg-gray-200 shadow-lg rounded-lg my-20">
@@ -9,25 +40,25 @@ function Posts() {
           />
         </div>
         <div>
-          <h2 className="text-gray-800 text-3xl font-semibold">Design Tools</h2>
-          <p className="mt-2 text-gray-600">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Quae
-            dolores deserunt ea doloremque natus error, rerum quas odio quaerat
-            nam ex commodi hic, suscipit in a veritatis pariatur minus
-            consequuntur!
-          </p>
+          <h2 className="text-gray-800 text-3xl font-semibold">
+            From {data.fullname}
+          </h2>
+          <p className="mt-2 text-gray-600">{data.description}</p>
         </div>
         <div className="flex justify-between mt-4">
-          <a href="#" className="text-xl font-medium text-blue-800">
-            8 Likes
-          </a>
-          <a href="#" className="text-xl font-medium text-red-600">
+          <button className="text-xl font-medium text-blue-800">
+            {data.number_of_reactions} Likes
+          </button>
+          <button
+            onClick={() => {
+              handleDelete(data.id);
+            }}
+            className="text-xl font-medium text-red-600"
+          >
             Delete
-          </a>
+          </button>
         </div>
       </div>
     </div>
   );
 }
-
-export default Posts;

@@ -1,10 +1,14 @@
+import { ReactChild } from "react";
 import Footer from "./footer";
 import Navbar from "./navbar";
-
-const Layout = ({ children }: { children: React.ReactElement }) => {
+interface LayoutProps {
+  currentUser: { id: string; username: string; iat: number };
+  children: ReactChild;
+}
+const Layout = ({ children, currentUser }: LayoutProps) => {
   return (
     <div className="content">
-      <Navbar />
+      <Navbar user={currentUser} />
       {children}
       <Footer />
     </div>
