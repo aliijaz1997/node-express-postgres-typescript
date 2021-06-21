@@ -119,9 +119,27 @@ app.post("/api/auth/signin", async (req, res) => {
     return res.status(500).send();
   }
 });
+app.post("/comments", async (req, res) => {
+  const body = req.body;
+  console.log(body.id);
+
+  const postsComments = await pool.query(
+    "select users.fullname, coment.description, coment.id from coment LEFT JOIN users ON coment.user_id = users.id WHERE post_id=$1",
+    [body.id]
+  );
+  res.send(postsComments.rows);
+});
 if (!process.env.JWT_TOKEN) {
   process.exit(1);
 }
+app.post("/likes", async (req, res) => {
+  const body = req.body;
+  const postLikes = await pool.query(
+    "select u.fullname, r.name from post_reaction left outer join users u on u.id = post_reaction.user_id left join reactions r on post_reaction.reaction_id = r.id WHERE post_id = $1",
+    [body.id]
+  );
+  res.send(postLikes.rows);
+});
 app.post("/api/auth/signout", (req, res) => {
   req.session = null;
   res.status(200).send("Logged Out");
