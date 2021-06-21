@@ -9,7 +9,7 @@ export function buildClient(
     // Server
     return axios.create({
       baseURL,
-      headers: context.req.headers,
+      headers: context?.req?.headers,
     });
   } else {
     // Client

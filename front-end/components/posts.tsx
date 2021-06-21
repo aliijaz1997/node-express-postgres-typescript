@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import Router from "next/router";
+import Link from "next/link";
 export interface Post {
   id: number;
   updatedon: string;
@@ -49,6 +50,11 @@ function PostStructure({ data, handleDelete }: PostStructureProps) {
           <button className="text-xl font-medium text-blue-800">
             {data.number_of_reactions} Likes
           </button>
+          <Link href={"/details/" + data.id} key={data.id}>
+            <button className="text-xl font-medium text-purple-500">
+              Details of Post
+            </button>
+          </Link>
           <button
             onClick={() => {
               handleDelete(data.id);

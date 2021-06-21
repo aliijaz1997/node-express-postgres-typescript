@@ -1,3 +1,4 @@
+import axios from "axios";
 import Link from "next/link";
 import "../styles/Home.module.css";
 
@@ -7,7 +8,11 @@ interface User {
 
 const Navbar = ({ user }: User) => {
   console.log(user?.username);
-
+  const signOut = async () => {
+    await axios.post("http://localhost:5000/api/auth/signout", null, {
+      withCredentials: true,
+    });
+  };
   return (
     <nav className=" bg-blue-700 p-3">
       <div className="flex justify-between text-white mr-6">
@@ -37,7 +42,10 @@ const Navbar = ({ user }: User) => {
             <>
               <br />
               <Link href="/">
-                <button className="mr-1  bg-red-600 hover:bg-blue-700 text-white  py-1 px-2 rounded-full">
+                <button
+                  onClick={signOut}
+                  className="mr-1  bg-red-600 hover:bg-blue-700 text-white  py-1 px-2 rounded-full"
+                >
                   SignOut
                 </button>
               </Link>

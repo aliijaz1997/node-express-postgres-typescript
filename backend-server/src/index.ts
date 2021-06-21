@@ -42,7 +42,7 @@ app.post("/api/posts/", requireAuth, async (req, res) => {
 
   if (!body?.description) return res.status(400).send("Enter all the data");
   const newPost = await pool.query(
-    `INSERT INTO post (description,users_id,updatedon) VALUES ($1, $2, '2016-2-2 00:00')  RETURNING *
+    `INSERT INTO post (description,users_id,updatedon) VALUES ($1, $2, NOW())  RETURNING *
    `,
     [body.description, req.user?.id]
   );
