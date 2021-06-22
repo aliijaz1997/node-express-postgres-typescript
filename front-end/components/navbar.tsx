@@ -1,5 +1,6 @@
 import axios from "axios";
 import Link from "next/link";
+import Router from "next/router";
 import "../styles/Home.module.css";
 
 interface User {
@@ -12,6 +13,7 @@ const Navbar = ({ user }: User) => {
     await axios.post("http://localhost:5000/api/auth/signout", null, {
       withCredentials: true,
     });
+    await Router.push("/");
   };
   return (
     <nav className=" bg-blue-700 p-3">
@@ -41,14 +43,12 @@ const Navbar = ({ user }: User) => {
           ) : (
             <>
               <br />
-              <Link href="/">
-                <button
-                  onClick={signOut}
-                  className="mr-1  bg-red-600 hover:bg-blue-700 text-white  py-1 px-2 rounded-full"
-                >
-                  SignOut
-                </button>
-              </Link>
+              <button
+                onClick={signOut}
+                className="mr-1  bg-red-600 hover:bg-blue-700 text-white  py-1 px-2 rounded-full"
+              >
+                SignOut
+              </button>
               <span className="font-bold text-xl mt-2 text-yellow-400">
                 Welcome {user?.username}
               </span>

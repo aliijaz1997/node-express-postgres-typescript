@@ -77,7 +77,7 @@ function SignIn() {
                 <input
                   placeholder="Password"
                   className="h-8 text-white mt-1 rounded text-center bg-blue-900 border-black"
-                  type="text"
+                  type="password"
                   value={value}
                   onChange={onChange}
                 />

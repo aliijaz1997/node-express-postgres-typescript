@@ -132,6 +132,19 @@ app.post("/comments", async (req, res) => {
 if (!process.env.JWT_TOKEN) {
   process.exit(1);
 }
+app.post("/comment", requireAuth, async (req, res) => {
+  const body = req.body;
+  console.log(body.id);
+  const userId = req.user;
+  const postsComments = await pool.query(
+    "INSERT INTO coment(description, user_id, post_id) VALUES ($1, $2, $3)",
+    [body.description, userId?.id, body.postId]
+  );
+  res.send(postsComments.rows);
+});
+if (!process.env.JWT_TOKEN) {
+  process.exit(1);
+}
 app.post("/likes", async (req, res) => {
   const body = req.body;
   const postLikes = await pool.query(

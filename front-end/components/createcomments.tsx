@@ -7,7 +7,7 @@ interface SubmitFormProps {
   HandleSubmit: (data: FormData, reset: ({ Description }: any) => void) => void;
 }
 
-function CreatePost({ HandleSubmit }: SubmitFormProps) {
+function CreateComment({ HandleSubmit }: SubmitFormProps) {
   const { control, handleSubmit, reset } = useForm<FormData>();
 
   return (
@@ -37,11 +37,11 @@ function CreatePost({ HandleSubmit }: SubmitFormProps) {
           type="submit"
           className="px-8 rounded-r-lg bg-blue-400 text-gray-800 font-bold p-4 uppercase border-blue-500 border-t border-b border-r"
         >
-          Post
+          Create Comment
         </button>
       </form>
     </div>
   );
 }
 
-export default CreatePost;
+export default CreateComment;

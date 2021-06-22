@@ -1,5 +1,4 @@
 import { Comment } from "../pages/details/[id]";
-
 function CommentsDisplay(data: Comment) {
   console.log(data);
 
