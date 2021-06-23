@@ -3,6 +3,7 @@ import { Controller, useForm, useFormState } from "react-hook-form";
 import Layout from "../../components/layout";
 import Router from "next/router";
 import axios from "axios";
+import { baseUrl } from "../../BaseURL/baseurl";
 type FormData = {
   Email: string;
   UserName: string;
@@ -22,7 +23,7 @@ function SignUp() {
     console.log(data);
     try {
       await axios.post(
-        "http://localhost:5000/api/auth/signup",
+        `${baseUrl}/api/auth/signup`,
         {
           username: data.UserName,
           fullname: data.FullName,

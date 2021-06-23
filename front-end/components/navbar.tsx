@@ -10,7 +10,7 @@ interface User {
 const Navbar = ({ user }: User) => {
   console.log(user?.username);
   const signOut = async () => {
-    await axios.post("http://localhost:5000/api/auth/signout", null, {
+    await axios.post(`${baseUrl}/api/auth/signout`, null, {
       withCredentials: true,
     });
     await Router.push("/");

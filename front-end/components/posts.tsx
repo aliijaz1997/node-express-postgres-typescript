@@ -11,14 +11,20 @@ export interface Post {
 }
 interface PostsProps {
   handleDelete(id: number): void;
+  handleLike(postId: number): void;
   Data: Post[];
 }
-function Posts({ handleDelete, Data }: PostsProps) {
+function Posts({ handleDelete, Data, handleLike }: PostsProps) {
   return (
     <div>
       {Data?.map((data: Post, index: number) => {
         return (
-          <PostStructure handleDelete={handleDelete} data={data} key={index} />
+          <PostStructure
+            handleDelete={handleDelete}
+            data={data}
+            key={index}
+            handleLike={handleLike}
+          />
         );
       })}
     </div>
@@ -29,8 +35,9 @@ export default Posts;
 interface PostStructureProps {
   data: Post;
   handleDelete(id: number): void;
+  handleLike(postId: number): void;
 }
-function PostStructure({ data, handleDelete }: PostStructureProps) {
+function PostStructure({ data, handleDelete, handleLike }: PostStructureProps) {
   return (
     <div className="flex justify-center">
       <div className="max-w-md py-4 px-8 bg-gray-200 shadow-lg rounded-lg my-20">
@@ -47,7 +54,12 @@ function PostStructure({ data, handleDelete }: PostStructureProps) {
           <p className="mt-2 text-gray-600">{data.description}</p>
         </div>
         <div className="flex justify-between mt-4">
-          <button className="text-xl font-medium text-blue-800">
+          <button
+            onClick={() => {
+              handleLike(data.id);
+            }}
+            className="text-xl font-medium text-blue-800"
+          >
             {data.number_of_reactions} Likes
           </button>
           <Link href={"/details/" + data.id} key={data.id}>

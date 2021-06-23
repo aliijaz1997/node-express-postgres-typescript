@@ -5,6 +5,7 @@ import CommentsDisplay from "../../components/commentsDisplay";
 import LikesDisplay from "../../components/likesdisplay";
 import CreateComment from "../../components/createcomments";
 import { FormData } from "../../components/createcomments";
+import { baseUrl } from "../../BaseURL/baseurl";
 export interface Comment {
   id: number;
   description: string;
@@ -22,14 +23,14 @@ const Details = () => {
   console.log(postIdFromUrl);
   useEffect(() => {
     axios
-      .post("http://localhost:5000/comments", {
+      .post(`${baseUrl}/comments`, {
         id: postIdFromUrl.id,
       })
       .then((res) => setPostComments(res.data));
   }, []);
   useEffect(() => {
     axios
-      .post("http://localhost:5000/likes", {
+      .post(`${baseUrl}/likes`, {
         id: postIdFromUrl.id,
       })
       .then((res) => setPostLikes(res.data));
@@ -42,13 +43,13 @@ const Details = () => {
     console.log(data);
     try {
       await axios.post(
-        "http://localhost:5000/comment/",
+        `${baseUrl}/comment/`,
         { description: data.Description, postId: postIdFromUrl.id },
         { withCredentials: true }
       );
       reset({ Description: "" });
       await axios
-        .post("http://localhost:5000/comments", {
+        .post(`${baseUrl}/comments`, {
           id: postIdFromUrl.id,
         })
         .then((res) => setPostComments(res.data));

@@ -153,6 +153,14 @@ app.post("/likes", async (req, res) => {
   );
   res.send(postLikes.rows);
 });
+app.post("/like", requireAuth, async (req, res) => {
+  const body = req.body;
+  const user = req.user;
+  const addLike = await pool.query(
+    "insert into post_reaction (user_id, post_id, reaction_id) values ($1, $2, 1)",
+    [user?.id, body.postId]
+  );
+});
 app.post("/api/auth/signout", (req, res) => {
   req.session = null;
   res.status(200).send("Logged Out");
